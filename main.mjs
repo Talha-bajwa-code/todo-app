@@ -1,20 +1,45 @@
-let myArry = []
+function add_todo(event) {
+    event.preventDefault(); // ENTER reload ko rokta hai
 
-function todo_app(event) {
-    event.preventDefault()
+    const input = document.getElementById("todoInput");
+    const result = document.querySelector(".result");
 
-    const userInput = document.querySelector(".item").value
+    if (input.value.trim() === "") return;
 
-    myArry.unshift(userInput)
+    const div = document.createElement("div");
+    div.className = "singleTodo";
 
-    document.querySelector(".item").value = ""
+    div.innerHTML = `
+        <p>${input.value}</p>
+        <button onclick="delete_todo(event)">Delete</button>
+        <button onclick="edit_todo(event)">Edit</button>
+    `;
 
-    let resultContainer = document.querySelector(".result")
+    result.appendChild(div);
 
-    resultContainer.innerHTML = ""
+    input.value = ""; // input clear
+}
 
-    for (let i = 0; i < myArry.length; i++) {
-       resultContainer.innerHTML += `<p>${myArry[i]}</p>`
-        
+function delete_todo(event) {
+    event.target.parentNode.remove();
+}
+
+function edit_todo(event) {
+    const p = event.target.parentNode.querySelector("p");
+    const newText = prompt("Edit todo", p.innerText);
+
+    if (newText !== null && newText.trim() !== "") {
+        p.innerText = newText;
     }
 }
+
+
+function toggleTheme() {
+    document.body.classList.toggle("dark");
+
+    const btn = document.querySelector(".theme-toggle");
+    btn.textContent = document.body.classList.contains("dark")
+        ? "☀️"
+        : "🌙";
+}
+
